@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using System;
 
 public class GameManager : MonoBehaviour
@@ -10,41 +11,61 @@ public class GameManager : MonoBehaviour
 
     public float time = 60;
     public TextMeshProUGUI countDown;
+    public GameObject levelProgress;
     public GameObject gameOver;
 
     public int startCount;
     public TextMeshProUGUI starttext;
 
-    public GameObject playerCar;
-    public GameObject explosionVFX;
+    [HideInInspector] public GameObject playerCar;
+    [HideInInspector] public GameObject explosionVFX;
     public GameObject firstCam;
-    public GameObject lastCam;
 
     public GameObject touchImg;
+
+    public GameObject coinsVFX;
+    public GameObject coins;
+    /*public Text currentCoins;
+    public static int iniCoins;
+
+
+    public Text coinsUI;
+    private static int coins;*/
 
 
     private void Awake()
     {
         instance = this;
+
+        
     }
 
     void Start()
     {
+        // currentCoins.text = PlayerPrefs.GetInt("CurrentCoins" , iniCoins).ToString();
+
+        
         countDown.enabled = false;
         //countDown.text = timeStart.ToString();
         StartCoroutine(Go());
+        StartCoroutine(StartGame());
+
+        playerCar = GameObject.FindGameObjectWithTag("Player");
+        explosionVFX = GameObject.Find("Explosion");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
         
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
 
-        // if th player lose the game
-       
 
-        
     }
 
     public void starTime()
@@ -79,6 +100,12 @@ public class GameManager : MonoBehaviour
                 gameOver.SetActive(true);
                 playerCar.GetComponent<Car>().enabled = false;
             }
+
+            if (time <= 10)
+            {
+                countDown.color = Color.red;
+            }
+
         }      
     }
 
@@ -96,18 +123,22 @@ public class GameManager : MonoBehaviour
 
         }
 
-        starttext.text = "Go !";
+        starttext.text = "GO";
         Vibrations.Vibrate(1000);
+        
 
         StartCoroutine(Touch());
 
         yield return new WaitForSeconds(1f);
+
         countDown.enabled = true;
         starttext.enabled = false;
-
+        levelProgress.SetActive(true);
+        starTime();
+        playerCar.GetComponent<AudioSource>().enabled = true;
         playerCar.GetComponent<Car>().enabled = true;
 
-        starTime();
+        
     }
 
     IEnumerator Touch()
@@ -117,6 +148,24 @@ public class GameManager : MonoBehaviour
         touchImg.SetActive(false);
 
     }
+
+    IEnumerator StartGame()
+    {
+        
+        yield return new WaitForSeconds(1f);
+        starttext.GetComponent<AudioSource>().enabled = true;
+        starttext.color = Color.yellow;
+        yield return new WaitForSeconds(1f);
+        starttext.color = Color.green;
+        yield return new WaitForSeconds(1f);
+        starttext.color = Color.blue;
+        yield return new WaitForSeconds(1f);
+        starttext.color = Color.red;
+
+       
+    }
+
+ 
 
 
 }

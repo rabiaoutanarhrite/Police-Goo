@@ -1,5 +1,4 @@
-﻿using Cinemachine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ public class RotObj : MonoBehaviour
 {
     //public GameObject playerCar;
     //public GameObject car;
-    public GameObject explosionVFX;
+   
 
 
     void Start()
@@ -22,15 +21,18 @@ public class RotObj : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.playerCar.GetComponent<Car>().enabled = false;
+            //other.gameObject.GetComponent<Car>().enabled = false;
+            other.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            //other.gameObject.GetComponent<Car>().ExplosionFX();
+            other.gameObject.GetComponent<ExplosionFX>().ExpVFX();
+            other.gameObject.GetComponent<AudioSource>().enabled = false;
             GameManager.instance.stopTime();
             Debug.Log("Done!");
             
 
-            GameManager.instance.explosionVFX.SetActive(true);
             GameManager.instance.gameOver.SetActive(true);
-            GameManager.instance.firstCam.GetComponent<CinemachineBrain>().enabled = false;
-            Vibrations.Vibrate(1000);
+            
+            Vibrations.Vibrate(500);
 
 
             GameObject carobject;

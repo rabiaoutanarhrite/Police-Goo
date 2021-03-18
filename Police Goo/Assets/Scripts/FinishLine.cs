@@ -12,10 +12,11 @@ public class FinishLine : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             GameManager.instance.stopTime();
-            GameManager.instance.firstCam.SetActive(false);
-            GameManager.instance.lastCam.GetComponent<CamRot>().enabled = true;
-            GameManager.instance.playerCar.GetComponentInChildren<Rigidbody>().isKinematic = true;
-            GameManager.instance.playerCar.GetComponent<Car>().enabled = false;
+           
+
+            other.GetComponentInChildren<Rigidbody>().isKinematic = true;
+            other.GetComponent<AudioSource>().enabled = false;
+            other.GetComponent<Car>().enabled = false;
             Debug.Log("You Win!!");
             winVFX.SetActive(true);
             StartCoroutine(Winning());
@@ -23,20 +24,20 @@ public class FinishLine : MonoBehaviour
             Vibrations.Vibrate(1500);
 
 
-            //Destroy(GameManager.instance.gameOver);
-            //GameManager.instance.gameOver.SetActive(false);
-
-
-
         }
 
 
     }
 
+  
+    
     IEnumerator Winning()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2); 
         winPanel.SetActive(true);
+        yield return new WaitForSeconds(1);
+        GameManager.instance.coinsVFX.SetActive(true);
+        GameManager.instance.coins.GetComponent<CoinsSystem>().EarnCoins();
     }
     
     
