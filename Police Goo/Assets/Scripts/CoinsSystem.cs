@@ -7,61 +7,78 @@ public class CoinsSystem : MonoBehaviour
    
 
     public Text currentCoins;
-    public static int iniCoins;
+    public static int iniCoins = 0;
 
 
     public Text coinsUI;
-    private static int coins;
+    private  int coins;
+
+   
 
     void Start()
     {
-        currentCoins.text = PlayerPrefs.GetInt("CurrentCoins", iniCoins).ToString();
+        iniCoins = PlayerPrefs.GetInt("CurrentCoins", iniCoins);
+        currentCoins.text = iniCoins.ToString();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log(coins);
+        PlayerPrefs.Save();
     }
 
     public void EarnCoins()
     {
+       
         float time = GameManager.instance.time;
         if (time > 5)
         {
             coins = 150;
-            iniCoins = iniCoins + coins;
+            //iniCoins = iniCoins + coins;
             coinsUI.text = ("+" + coins.ToString() + "$");
-
+            currentCoins.text = (iniCoins/2).ToString();
         }
 
         else if (time <= 5 && time >= 3)
         {
             coins = 100;
-            iniCoins = iniCoins + coins;
+           // iniCoins += coins;
             coinsUI.text = ("+" + coins.ToString() + "$");
-
+            currentCoins.text = (iniCoins / 2).ToString();
         }
 
         else if (time < 3 && time > 0)
         {
             coins = 50;
-            iniCoins = iniCoins + coins;
+            //iniCoins += coins;
             coinsUI.text = ("+" + coins.ToString() + "$");
-
+            currentCoins.text = (iniCoins / 2).ToString();
         }
 
         else if (time == 0)
         {
             coins = 0;
-            iniCoins = iniCoins + coins;
+            //iniCoins += coins;
             coinsUI.text = ("+" + coins.ToString() + "$");
-
+            currentCoins.text = (iniCoins / 2).ToString();
         }
+        
 
-        PlayerPrefs.SetInt("CurrentCoins", iniCoins / 2);
-        PlayerPrefs.Save();
-        currentCoins.text = (iniCoins / 2).ToString();
+        PlayerPrefs.SetInt("CurrentCoins", iniCoins + coins);
+        currentCoins.text = (iniCoins + coins).ToString();
+
 
     }
+
+    public void ExtraCoin()
+    {
+        coins = 10;
+        iniCoins += coins;
+        PlayerPrefs.SetInt("CurrentCoins", iniCoins);
+       
+        currentCoins.text = iniCoins.ToString();
+       
+    }
+
+    
+
 }

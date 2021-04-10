@@ -23,7 +23,7 @@ public class Car : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetAxis("Fire1") > 0f)
+        if (GameManager.instance.fixedTouchField.GetComponent<FixedTouchField>().Pressed)
         {
             body.velocity = transform.forward * speed * Time.fixedDeltaTime;
             body.isKinematic = false;

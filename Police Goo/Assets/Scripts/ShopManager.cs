@@ -11,10 +11,12 @@ public class ShopManager : MonoBehaviour
 
     public CarBleuprint[] cars;
     public Button buyBtn;
+    public GameObject lockImg;
     public Text priceText;
 
     void Start()
     {
+
         foreach(CarBleuprint car in cars )
         {
             if (car.price == 0)
@@ -61,6 +63,8 @@ public class ShopManager : MonoBehaviour
             return;
 
         PlayerPrefs.SetInt("SelectorCar", currentCarIndex);
+
+
     }
 
     public void PreviousCar()
@@ -79,16 +83,27 @@ public class ShopManager : MonoBehaviour
             return;
 
         PlayerPrefs.SetInt("SelectorCar", currentCarIndex);
+
+ 
     }
 
     public void BuyCar()
     {
+        
         CarBleuprint c = cars[currentCarIndex];
-
-        PlayerPrefs.SetInt(c.name, 1);
-        PlayerPrefs.SetInt("SelectorCar", currentCarIndex);
-        c.isUnlocked = true;
-        PlayerPrefs.SetInt("CurrentCoins", PlayerPrefs.GetInt("CurrentCoins", 0) - c.price);
+        if (!c.isUnlocked)
+        {
+            PlayerPrefs.SetInt(c.name, 1);
+            PlayerPrefs.SetInt("SelectorCar", currentCarIndex);
+            c.isUnlocked = true;
+            PlayerPrefs.SetInt("CurrentCoins", PlayerPrefs.GetInt("CurrentCoins", 0) - c.price);
+            MainMenu.instance.PlayGame();
+        }
+        else
+        {
+            MainMenu.instance.PlayGame();
+        }
+        
     }
 
     private void UpdateUI()
@@ -97,20 +112,28 @@ public class ShopManager : MonoBehaviour
         if(c.isUnlocked)
         {
             priceText.text = c.price + " $";
-            buyBtn.gameObject.SetActive(false);
+            buyBtn.interactable = true;
+            lockImg.SetActive(false);
         }
         else
         {
+            lockImg.SetActive(true);
             buyBtn.gameObject.SetActive(true);
             priceText.text = c.price + " $";
             if(c.price <= PlayerPrefs.GetInt("CurrentCoins", 0))
             {
                 buyBtn.interactable = true;
+                
             }
+            
+
             else
             {
                 buyBtn.interactable = false;
+               
             }
         }
     }
+
+
 }

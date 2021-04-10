@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float time = 60;
     public TextMeshProUGUI countDown;
     public GameObject levelProgress;
+    public GameObject youWin;
     public GameObject gameOver;
 
     public int startCount;
@@ -25,6 +26,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject coinsVFX;
     public GameObject coins;
+
+    public GameObject fixedTouchField;
+
+    public GameObject pauseBtn;
+
+    public Slider audioSlider;
     /*public Text currentCoins;
     public static int iniCoins;
 

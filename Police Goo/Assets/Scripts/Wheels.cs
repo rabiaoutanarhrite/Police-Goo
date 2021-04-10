@@ -8,7 +8,7 @@ public class Wheels : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetAxis("Fire1") > 0f)
+        if(GameManager.instance.fixedTouchField.GetComponent<FixedTouchField>().Pressed)
         {
 
             transform.Rotate(rotSpeed * Time.deltaTime, 0, 0);

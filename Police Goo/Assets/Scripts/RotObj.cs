@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class RotObj : MonoBehaviour
 {
-    //public GameObject playerCar;
-    //public GameObject car;
-   
-
+    public bool levelCompleted = false;
 
     void Start()
     {
         
-            }
+     }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,24 +18,33 @@ public class RotObj : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
+            
             //other.gameObject.GetComponent<Car>().enabled = false;
             other.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             //other.gameObject.GetComponent<Car>().ExplosionFX();
             other.gameObject.GetComponent<ExplosionFX>().ExpVFX();
             other.gameObject.GetComponent<AudioSource>().enabled = false;
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
             GameManager.instance.stopTime();
-            Debug.Log("Done!");
+            if (levelCompleted)
+            {
+                GameManager.instance.youWin.SetActive(true);
+            }
+            else
+            {
+                GameManager.instance.gameOver.SetActive(true);
+            }
+            GameManager.instance.pauseBtn.SetActive(false);
             
-
-            GameManager.instance.gameOver.SetActive(true);
             
             Vibrations.Vibrate(500);
 
 
             GameObject carobject;
             carobject = GameObject.FindWithTag("Car");
-            Destroy(carobject);
+            carobject.SetActive(false);
 
+            this.GetComponent<Collider>().enabled = false;
 
             
 

@@ -9,19 +9,31 @@ public class CameraNewPosition : MonoBehaviour
 
     // CinemachineComposer composer;
     public float Speed = 0.01f;
-
-    public Vector3 newOffset;
-
     private bool isOn = false;
+    public Vector3 newOffset;
+    public bool TrackOn = false;
+    public Vector3 newTrackOffset;
 
-    private void LateUpdate()
+    
+
+    
+
+    private void FixedUpdate()
     {
         if(isOn)
         {
             CinemachineVirtualCamera vcam = cinMachineCam.GetComponent<Cinemachine.CinemachineVirtualCamera>();
             CinemachineTransposer transposer = vcam.GetCinemachineComponent<CinemachineTransposer>();
             
-            transposer.m_FollowOffset = Vector3.Lerp(transposer.m_FollowOffset, newOffset, transposer.m_YawDamping * Time.deltaTime);
+            transposer.m_FollowOffset = Vector3.Lerp(transposer.m_FollowOffset, newOffset, transposer.m_YawDamping * Time.fixedDeltaTime);
+
+            if (TrackOn)
+            {
+                CinemachineComposer composer = vcam.GetCinemachineComponent<CinemachineComposer>();
+
+                composer.m_TrackedObjectOffset = newTrackOffset;
+            }
+
             StartCoroutine(exitFunc());
 
         }

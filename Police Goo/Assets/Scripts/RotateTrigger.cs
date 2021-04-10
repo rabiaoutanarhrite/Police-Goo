@@ -6,6 +6,7 @@ public class RotateTrigger : MonoBehaviour
 {
     public float rotationDir = 90;
 
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))

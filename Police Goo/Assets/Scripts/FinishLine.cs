@@ -5,14 +5,13 @@ using UnityEngine;
 public class FinishLine : MonoBehaviour
 {
     public GameObject winVFX;
-    public GameObject winPanel;
     private void OnTriggerEnter(Collider other)
     {
 
         if (other.gameObject.CompareTag("Player"))
         {
             GameManager.instance.stopTime();
-           
+            GameManager.instance.pauseBtn.SetActive(false);
 
             other.GetComponentInChildren<Rigidbody>().isKinematic = true;
             other.GetComponent<AudioSource>().enabled = false;
@@ -34,7 +33,7 @@ public class FinishLine : MonoBehaviour
     IEnumerator Winning()
     {
         yield return new WaitForSeconds(2); 
-        winPanel.SetActive(true);
+        GameManager.instance.youWin.SetActive(true);
         yield return new WaitForSeconds(1);
         GameManager.instance.coinsVFX.SetActive(true);
         GameManager.instance.coins.GetComponent<CoinsSystem>().EarnCoins();
